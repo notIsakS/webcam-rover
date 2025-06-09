@@ -1,2 +1,2 @@
 # webcam-rover
-Webcam controlled rover to follow paths, move objects with a forklift, and avoid obstacles.
+Webcam-controlled rover that follows paths, moves objects with a forklift, and avoids obstacles.
