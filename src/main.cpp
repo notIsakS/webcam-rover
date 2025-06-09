@@ -1,18 +1,31 @@
+#include <Arduino_PMIC.h>
+#include <ArduinoMotorCarrier.h>
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+/* States for which the rover can be in */
+enum State {
+  IDLE,
+  MOVING
+};
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+State currentState = IDLE;
+
+void setup()
+{
+  Serial.begin(115200);
+  while (!Serial);
+  /* Fix issue with Controller not being recognized, or find other way to make it work.*/
+  if (!Controller.begin()) {
+    Serial.println("Motor carrier not detected.");
+    while (1);
+  } 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  /* 
+  Goals:
+  Communicate with Arduino IoT Nano 33 - Done
+  Make the rover go in a straight line and circles - tbd
+  Get the forklift working with servo motor - tbd
+  */
 }
