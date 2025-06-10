@@ -2,6 +2,7 @@
 #include <ArduinoMotorCarrier.h>
 #include <Arduino.h>
 
+
 /* States for which the rover can be in */
 enum State {
   IDLE,
@@ -13,12 +14,17 @@ State currentState = IDLE;
 void setup()
 {
   Serial.begin(115200);
-  while (!Serial);
-  /* Fix issue with Controller not being recognized, or find other way to make it work.*/
-  if (!Controller.begin()) {
-    Serial.println("Motor carrier not detected.");
+  if (controller.begin())
+  {
+    Serial.print("Motor Carrier connected, firmware version ");
+    Serial.println(controller.getFWVersion());
+  }
+  else
+  {
+    Serial.println("Couldn't connect! Is the red LED blinking? You may need to update the firmware with FWUpdater sketch");
     while (1);
-  } 
+  }
+
 }
 
 void loop() {
