@@ -1,3 +1,11 @@
+/*
+
+ROVER PROJECT MADE BY NotIsakS
+This project is created by the inspiration 
+
+*/
+
+
 #include <Arduino_PMIC.h>
 #include <ArduinoMotorCarrier.h>
 #include <Arduino.h>

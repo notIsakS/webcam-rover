@@ -10,6 +10,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
 
+
+def random_position():
+    return (rand.randint(0,620), rand.randint(0,460))
+
 s = 0
 if len(sys.argv) > 1:
     s = sys.argv[1]
@@ -18,10 +22,6 @@ source = cv2.VideoCapture(s)
 win_name = 'Camera Preview'
 cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
 (x, y, windowWidth, windowHeight) = cv2.getWindowImageRect(win_name)
-
-
-def random_position():
-    return (rand.randint(0,620), rand.randint(0,460))
 
 rand_circle_pos = random_position()
 
@@ -43,9 +43,12 @@ while cv2.waitKey(1) != 27: # Escape
 
     result = cv2.bitwise_and(frame, frame, mask=mask)
 
+    addition = cv2.add(frame_with_circle, result)
+
     cv2.imshow('with circle', frame_with_circle)
     cv2.imshow('mask', result)
     cv2.imshow(win_name, frame)
+    cv2.imshow('merged', addition)
 
 print("Origin Coordinates(x,y): ", x, y)
 print("Width: ", windowWidth)
