@@ -11,25 +11,6 @@ This project is created by the inspiration
 #include <Arduino.h>
 
 void printStatus(float voltage, int count1, float vel1, int count2, float vel2, int duty);
-void forward(int speed);
-void backwards(int speed);
-void brake();
-void coast();
-
-const int M4_PWM1 = 5;  //  D5 -> MP6522 IN1
-const int M4_PWM2 = 4;  //  D4 -> MP6522 IN2
-
-// Statemachine
-enum State { 
-  IDLE,
-  MOVING
-};
-
-// Current state
-// Will be made possible to write "STOP", or "RUN"
-// To controll if the statemachine is working
-// Sets PWM to 0
-State currentState = MOVING;
 
 float batteryVoltage;
 
@@ -63,9 +44,6 @@ void setup()
   M1.setDuty(0); // Negative for CW direction
   M2.setDuty(0); // Positive for CW direction
 
-  pinMode(M4_PWM1, OUTPUT);
-  pinMode(M4_PWM2, OUTPUT);
-
   if (!PMIC.enableBoostMode()) {
     Serial.println("Error enabling Boost Mode");
   }
@@ -96,7 +74,9 @@ void loop() {
   Serial.println("");
   delay(5000);
 
-  if (Serial.available() > 0){
+  /*
+  if (Serial.available() > 0)
+  {
     int dutyCycle = Serial.parseInt();
     int safeDuty = constrain(dutyCycle, 0, 100);
 
@@ -106,9 +86,10 @@ void loop() {
     M1.setDuty(-safeDuty);
     M2.setDuty(safeDuty);
 
-    /*
+    
     // Controlling PWM signal by COM port
-    switch (dutyCycle) {
+    switch (dutyCycle) 
+    {
       case 0:
         M1.setDuty(-safeDuty);
         M2.setDuty(safeDuty);
@@ -130,13 +111,8 @@ void loop() {
       default:
       Serial.println("Unknown value, try: 0, 10, 25, 50, 75, 100");
     }
-    */
   }
-  
-  forward(128);   // 50% PWM
-  backwards(128); // 50% PWM
-  brake();        // Immediate stop
-  coast();        // Relaxed stop
+  */
 
   controller.ping();
   delay(50);
@@ -168,27 +144,4 @@ void printStatus(float voltage, int count1, float vel1, int count2, float vel2, 
   Serial.print("Duty Cycle: ");
   Serial.print(duty);
   Serial.println(" %");
-}
-
-
-void forward(int speed) {
-  speed = constrain(speed, 0, 255);
-  digitalWrite(IN1, LOW);  // OUT1 Low
-  analogWrite(IN2, speed); // OUT2 High
-}
-
-void backwards(int speed) {
-  speed = constrain(speed, 0, 255);
-  digitalWrite(IN2, LOW);  // OUT1 LOW
-  analogWrite(IN1, speed); // OUT2 HIGH
-}
-
-void brake() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, HIGH);
-}
-
-void coast() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
 }
