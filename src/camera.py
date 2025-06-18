@@ -1,7 +1,7 @@
-# This program is a chaser program
-# Designed to have a blue circle at a random location
+# This is a chaser program
+# Designed to spawn a blue circle at a random location,
 # within the borders of the camera.
-# And the program tracks a red circle on top of the rover
+# The program tracks a red circle on top of the rover
 # such that, when the rover is near the blue circle
 # the blue circle appears at a new randomized location.
 
@@ -35,7 +35,7 @@ while cv2.waitKey(1) != 27: # Escape
         break
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_red = np.array([0, 130, 120])
+    lower_red = np.array([0, 120, 120])
     upper_red = np.array([20, 255, 255])
     red_mask = cv2.inRange(hsv, lower_red, upper_red)
     
@@ -69,9 +69,9 @@ while cv2.waitKey(1) != 27: # Escape
 
 
 print("Origin Coordinates(x,y): ", x, y)
-print("Width: ", windowWidth)
-print("Height: ", windowHeight)
-print(robot_pos)
-
+print("Window Width: ", windowWidth)
+print("Window Height: ", windowHeight)
+print("robot pos: x: %i, y: %i" % robot_pos)
+print("circle pos: x: %i, y: %i" % rand_circle_pos)
 source.release()
 cv2.destroyWindow(win_name)
