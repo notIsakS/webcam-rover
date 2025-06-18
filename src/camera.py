@@ -1,13 +1,13 @@
-# This program is designed to create a red circle
-# on the webcam display, and have a rover (blue circle)
-# create an optimal path to the red circle.
-# once the blue circle touches the red circle
-# a new red circle appears, and repeat.
+# This program is a chaser program
+# Designed to have a blue circle at a random location
+# within the borders of the camera.
+# And the program tracks a red circle on top of the rover
+# such that, when the rover is near the blue circle
+# the blue circle appears at a new randomized location.
 
 import cv2
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
 import random as rand
 
 
@@ -29,8 +29,6 @@ rand_circle_radius = 10
 def euclideanDistance(p1,p2):
     return np.linalg.norm(np.array(p1) - np.array(p2))
 
-prevCircle = None
-dist = lambda x1, y1, x2, y2: (x1-x2)**2+(y1-y2)**2
 while cv2.waitKey(1) != 27: # Escape
     has_frame, frame = source.read()
     if not has_frame:
@@ -73,6 +71,7 @@ while cv2.waitKey(1) != 27: # Escape
 print("Origin Coordinates(x,y): ", x, y)
 print("Width: ", windowWidth)
 print("Height: ", windowHeight)
+print(robot_pos)
 
 source.release()
 cv2.destroyWindow(win_name)
