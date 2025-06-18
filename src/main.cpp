@@ -1,24 +1,21 @@
 /*
-
 ROVER PROJECT MADE BY NotIsakS
-This project is created by the inspiration 
-
+This project was created to learn C++ code, 
+basic robotics, and using external devices such as a camera.
 */
-
 
 #include <Arduino_PMIC.h>
 #include <ArduinoMotorCarrier.h>
 #include <Arduino.h>
 
-void printStatus(float voltage, int count1, float vel1, int count2, float vel2, int duty);
 
+void encoderReadings();
 float batteryVoltage;
 
 void setup()
 {
   //Serial port initialization
-  Serial.begin(115200); 
-  //while (!Serial);
+  Serial.begin(115200);
 
   //Establishing the communication with the Motor Carrier
   if (controller.begin()){
@@ -36,7 +33,7 @@ void setup()
   delay(500);
   
   // Reset the encoders internal counter to zero
-  Serial.println("rest counters");
+  Serial.println("reset counters");
   encoder1.resetCounter(0);
   encoder2.resetCounter(0);
 
@@ -56,13 +53,15 @@ void setup()
 }
 
 void loop() {
-/* 
-  Goals:
-  Communicate with Arduino IoT Nano 33 - Done
-  Make the rover go in a straight line and circles - tbd
-  Get the forklift working with servo motor - tbd
-*/
+  // Getting encoder readings
+  encoderReadings();
+  delay(1000);
 
+  controller.ping();
+  delay(50);
+}
+
+void encoderReadings(){
   Serial.print("Encoder1 Pos [counts]: ");
   Serial.print(encoder1.getRawCount());
   Serial.print(" Encoder1 vel [count/sec]:");
@@ -72,76 +71,4 @@ void loop() {
   Serial.print(" Encoder2 vel [count/sec]:");
   Serial.println(encoder2.getCountPerSecond());
   Serial.println("");
-  delay(5000);
-
-  /*
-  if (Serial.available() > 0)
-  {
-    int dutyCycle = Serial.parseInt();
-    int safeDuty = constrain(dutyCycle, 0, 100);
-
-    Serial.print("Received duty cycle: ");
-    Serial.println(safeDuty);
-    
-    M1.setDuty(-safeDuty);
-    M2.setDuty(safeDuty);
-
-    
-    // Controlling PWM signal by COM port
-    switch (dutyCycle) 
-    {
-      case 0:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      case 10:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      case 25:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      case 50:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      case 75:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      case 100:
-        M1.setDuty(-safeDuty);
-        M2.setDuty(safeDuty);
-      default:
-      Serial.println("Unknown value, try: 0, 10, 25, 50, 75, 100");
-    }
-  }
-  */
-
-  controller.ping();
-  delay(50);
-}
-
-
-void printStatus(float voltage, int count1, float vel1, int count2, float vel2, int duty){
-  Serial.write(27);
-  Serial.print("[2J");
-  Serial.write(27);
-  Serial.print("[H");
-
-  Serial.print("Battery Voltage: ");
-  Serial.print(voltage, 3);
-  Serial.println(" V");
-
-  Serial.print("Encoder1: ");
-  Serial.print(count1);
-  Serial.print(" counts | ");
-  Serial.print(vel1);
-  Serial.println(" counts/s");
-
-  Serial.print("Encoder2: ");
-  Serial.print(count2);
-  Serial.print(" counts | ");
-  Serial.print(vel2);
-  Serial.print(" counts/s");
-
-  Serial.print("Duty Cycle: ");
-  Serial.print(duty);
-  Serial.println(" %");
 }
